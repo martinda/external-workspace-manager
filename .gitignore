@@ -1,0 +1,12 @@
+# Maven build
+target/
+
+# Backups created by gedit
+*~
+
+# Jenkins hpi:run folder:
+work/*
+
+# Vim files
+Session.vim
+*.swp
