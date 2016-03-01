@@ -1,16 +1,16 @@
-Templated Shared Workspace Plugin
+External Workspace Plugin
 ====
 
-This plugin implements a templated shared workspace management system.
-It facilitates workspace reuse across jobs and builds. It eliminates
-the need to copy, archive or move files in some common scenarios such
-as Git pull-request delivery pipelines.
+This plugin implements an external workspace management system. It
+facilitates workspace share and reuse across jobs and builds. It
+eliminates the need to copy, archive or move files in some common
+scenarios such as Git pull-request delivery pipelines.
 
 This differs from the Jenkins build-in custom workspace feature in the
 following ways:
 
 1. It can be used in Pipeline scripts
-2. It provides a default workspace unique to each build
+2. It provides a persistent default workspace unique to each build
 3. It allows jobs which are NOT linked, triggered, or in a pipeline, to share or reuse the same workspace
 4. The workspace path can be computed with a user configurable template
 5. It supports the Cloudbees Folder plugin
@@ -33,7 +33,7 @@ First the plugin is instantiated in a Pipeline script:
 
 ```
 // upstream job
-def workspace = tsWorkspace root: '/root/path'
+def workspace = externalWorkspace root: '/root/path'
 ```
 
 The workspace is computed by calling the `workspace.path` method when
@@ -60,7 +60,7 @@ the upstream job when the plugin is instantiated by the downstream job:
 
 ```
 // downstream job
-def workspace = tsWorkspace root: '/root/path', upstream: 'builder'
+def workspace = externalWorkspace root: '/root/path', upstream: 'builder'
 ```
 
 Then set the path as shown above when allocating the workspace for
@@ -95,14 +95,14 @@ stable upstream build number is used when computing the workspace. This
 behavior can be changed by passing a specific build number to the plugin:
 
 ```
-def workspace = tsWorkspace root: '/root/path', upstream: 'builder', buildNumber: '13'
+def workspace = externalWorkspace root: '/root/path', upstream: 'builder', buildNumber: '13'
 ```
 
 It does not make much sense to hard code a build number value, but a
 build parameter value can be passed as well:
 
 ```
-def workspace = tsWorkspace root: '/root/path', upstream: 'builder', buildNumber: UPSTREAM_BUILD_NUMBER
+def workspace = externalWorkspace root: '/root/path', upstream: 'builder', buildNumber: UPSTREAM_BUILD_NUMBER
 ```
 
 # Template
@@ -142,7 +142,7 @@ It is possible to specify a custom template like so:
 
 ```
 String myTemplate = '${root}/${myVar}'
-def workspace = tsWorkspace root: '/root/path', template: myTemplate
+def workspace = externalWorkspace root: '/root/path', template: myTemplate
 ```
 
 Then you must pass a value for the `myVar` variable when resolving the template value:
@@ -162,7 +162,7 @@ current build, so you can specify environment variables in the template:
 
 ```
 String myTemplate = '${root}/${env.VAR}'
-def workspace = tsWorkspace root: '/root/path', template: myTemplate
+def workspace = externalWorkspace root: '/root/path', template: myTemplate
 ```
 
 The `env.VAR` environment variable must exist by the time the workspace path
@@ -187,7 +187,7 @@ It is possible to use build parameters in templates:
 
 ```
 String myTemplate = '${root}/${BUILD_PARAM}'
-def workspace = tsWorkspace root: '/root/path', template: myTemplate
+def workspace = externalWorkspace root: '/root/path', template: myTemplate
 ```
 
 In this case the plugin automatically resolves the build parameter value
@@ -228,7 +228,7 @@ Then configure the upstream job (the job that builds the pull-request)
 to use this template:
 
 ```
-def workspace = tsWorkspace root: '/root/path', template: myTemplate
+def workspace = externalWorkspace root: '/root/path', template: myTemplate
 ```
 
 Lastly, pass the `PrNum` build parameter to the `getPath()` method
@@ -247,7 +247,7 @@ and by specifying the pull-request number as well:
 
 ```
 String myTemplate = '${root}/${jobName}/${prNumber}/${buildNumber}'
-def workspace = tsWorkspace root: '/root/path', template: myTemplate, upstream: 'prBuilder'
+def workspace = externalWorkspace root: '/root/path', template: myTemplate, upstream: 'prBuilder'
 node {
     ws(workspace.getPath([prNumber:PrNum]) {
         // something is build under /root/path/prBuilder/$prNumber/$upstreamStableBuildNumber
@@ -292,7 +292,7 @@ The configuration file must be readable by the Groovy ConfigSlurper. To
 use the configuration file, use the `configfile` plugin argument:
 
 ```
-def workspace = tsWorkspace configFile: 'file.config'
+def workspace = externalWorkspace configFile: 'file.config'
 ```
 
 ## Full configuration file
@@ -301,7 +301,7 @@ For quick reference, this is a fully populated configuration file:
 
 ```
 // Readable by the Groovy ConfigSlurper
-tsWorkspace {
+externalWorkspace {
 
     diskpool {
         // The disk pool is accessed from a symbolic link created from the root path
@@ -329,7 +329,7 @@ The root path can be specified in the configuration file:
 
 ```
 // Readable by the Groovy ConfigSlurper
-tsWorkspace {
+externalWorkspace {
     diskpool {
         // The disk pool is accessed from a symbolic link created from the root path
         root = '/nfs/projects/jenkins'
@@ -344,7 +344,7 @@ multiple jobs:
 
 ```
 // Readable by the Groovy ConfigSlurper
-tsWorkspace {
+externalWorkspace {
     // A template for Git pull requests
     template = '${root}/${jobName}/${prNumber}/${buildNumber}'
 
@@ -364,7 +364,7 @@ Here is a configuration file example:
 
 ```
 // Readable by the Groovy ConfigSlurper
-tsWorkspace {
+externalWorkspace {
     diskpool {
         disks = [
             '/nfs/projects/jenkins_disk1',
