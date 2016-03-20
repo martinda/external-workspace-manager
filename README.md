@@ -105,6 +105,22 @@ build parameter value can be passed as well:
 def workspace = externalWorkspace root: '/root/path', upstream: 'builder', buildNumber: UPSTREAM_BUILD_NUMBER
 ```
 
+# Copying the workspace
+
+By default, this plugin allows a job to run using another job's workspace.
+However, there are cases where taking a copy of the other job workspace is
+preferable. An example of this situation is when you need to run multiple
+concurrent downstream builds. In this case, you can specify the `copy:
+true` option:
+
+```
+def workspace = externalWorkspace root: '/root/path', upstream: 'builder', copy: true
+```
+
+When a copy is made, the workspace path is simply named after the current
+job (not the upstream job) rather than after the upstream job, and the build number
+is the current build number rather than the upstream build number.
+
 # Template
 
 The plugin uses a template to compute the workspace value. The default
@@ -125,11 +141,15 @@ also explained below.
 The `root`, `jobName` and `buildNumber` template elements are evaluated
 according to the rules outlined in the following table:
 
-| Element     | Value |
-|-------------|-------|
-| root        | The root of the workspace. Always supplied by the user. |
-| jobName     | The current job name, or the `upstream` job name when specified. |
-| buildNumber | The current job number, or the most recent stable `upstream` build number when the `upstream` job is specified |
+| Element     | upstream      | copy  | Value |
+|-------------|---------------|-------|-------|
+| root        | n/a           | n/a   | The root of the workspace. Always supplied by the user. |
+| jobName     | not specified | n/a   | The current job name |
+| jobName     | specified     | false | The `upstream` job name |
+| jobName     | specified     | true  | The current job name |
+| buildNumber | not specified | n/a   | The current job number |
+| buildNumber | specified     | false | The most recent stable `upstream` build number |
+| buildNumber | specified     | true  | The current job number |
 
 The template is programmable and can be changed by the user, either
 in-line, or using a configuration file (see [Using a configuration
@@ -281,6 +301,9 @@ Jenkins. To support this use case, the global configuration can be stored
 outside Jenkins. See the next section for global configuration details.
 
 # Using a global configuration file
+
+Note: this plugin is in the planning stage, and the global configuration
+could be implemented inside Jenkins, or as an external file.
 
 A global configuration file can be used to:
 
