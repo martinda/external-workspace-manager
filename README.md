@@ -13,7 +13,7 @@ following ways:
 2. It provides a persistent default workspace unique to each build
 3. It allows jobs which are NOT linked, triggered, or in a pipeline, to share or reuse the same workspace
 4. The workspace path can be computed with a user configurable template
-5. It supports the Cloudbees Folder plugin
+5. It supports the Folder plugin
 6. It supports multiple NFS volumes
 
 Contrary to the [Shared workspace
@@ -52,7 +52,7 @@ The plugin automatically adds the job name and the build number
 to the workspace path, resulting in the folowing workspace path:
 `/root/path/$JOB_NAME/$BUILD_NUMBER`. So if the `JOB_NAME`
 is `builder` and the `BUILD_NUMBER` is 12, then the workspace is
-`/root/path/builder/12`. If the Cloudbees Folder plugin is in use, the
+`/root/path/builder/12`. If the Folder plugin is in use, the
 `$JOB_NAME` also includes the folder name(s).
 
 To reuse the same workspace in a downstream job, specify the name of
@@ -409,8 +409,8 @@ link to it:
 
 ```
 
-If you use the Cloudbees Folder plugin, the `$LINK` is the part of the
-`$JOB_NAME` path up to the first slash. So if the Cloudbees Folder name is
+If you use the Folder plugin, the `$LINK` is the part of the
+`$JOB_NAME` path up to the first slash. So if the Folder name is
 `Admin/Test/jobName`, then the symbolic link `$LINK` is to `Admin` only.
 
 
