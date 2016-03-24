@@ -14,7 +14,7 @@ following ways:
 3. It allows jobs which are NOT linked, triggered, or in a pipeline, to share or reuse the same workspace
 4. The workspace path can be computed with a user configurable template
 5. It supports the Folder plugin
-6. It supports multiple NFS volumes
+6. It supports multiple physical disks
 
 Contrary to the [Shared workspace
 plugin](https://wiki.jenkins-ci.org/display/JENKINS/Shared+workspace+plugin)
@@ -309,7 +309,7 @@ A global configuration file can be used to:
 
 1. Set a root path common to multiple jobs
 2. Set a template common to multiple jobs
-3. Use multiple NFS volumes
+3. Use multiple physical disks
 
 The configuration file must be readable by the Groovy ConfigSlurper. To
 use the configuration file, use the `configfile` plugin argument:
@@ -376,12 +376,12 @@ externalWorkspace {
 }
 ```
 
-## Use multiple NFS volumes
+## Use multiple physical disks
 
-On NFS, you may need to allocate multiple physical disks to hold the
-workspaces of all the different jobs, but for convenience, you want
-to access them using a common path. For this use case, the plugin can
-create a symbolic link to the physical disk.
+On larger installations, you may need to allocate multiple physical disks
+to hold the workspaces of all the different jobs, but for convenience,
+you want to access them using a common path. For this use case, the
+plugin can create a symbolic link to the physical disk.
 
 Here is a configuration file example:
 
