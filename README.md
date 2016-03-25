@@ -342,7 +342,7 @@ externalWorkspace {
     template = '${root}/${jobName}/${prNumber}/${buildNumber}'
 
     // Default template (for reference)
-    // tempalte = ${root}/${jobName}/${buildNumber}
+    // template = ${root}/${jobName}/${buildNumber}
 }
 ```
 
@@ -372,7 +372,7 @@ externalWorkspace {
     template = '${root}/${jobName}/${prNumber}/${buildNumber}'
 
     // Default template (for reference)
-    // tempalte = ${root}/${jobName}/${buildNumber}
+    // template = ${root}/${jobName}/${buildNumber}
 }
 ```
 
