@@ -3,7 +3,7 @@ External Workspace Plugin
 
 **OBSOLETE**
 
-This is the ORIGINAL proposal for the external workspace manager plugin for Jenkins, the ACTUAL plugin is a Google Summer of Code Project under the [Jenkins organization](https://github.com/jenkinsci/external-workspace-manager-pluginP.
+This is the ORIGINAL proposal for the external workspace manager plugin for Jenkins, the ACTUAL plugin is a Google Summer of Code Project under the [Jenkins organization](https://github.com/jenkinsci/external-workspace-manager-plugin).
 
 The rest of the document is here for reference only.
 
