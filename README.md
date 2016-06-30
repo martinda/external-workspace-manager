@@ -1,6 +1,12 @@
 External Workspace Plugin
 ====
 
+**OBSOLETE**
+
+This is the ORIGINAL proposal for the external workspace manager plugin for Jenkins, the ACTUAL plugin is a Google Summer of Code Project under the [Jenkins organization](https://github.com/jenkinsci/external-workspace-manager-pluginP.
+
+The rest of the document is here for reference only.
+
 This plugin implements an external workspace management system. It
 facilitates workspace share and reuse across jobs and builds. It
 eliminates the need to copy, archive or move files in some common
